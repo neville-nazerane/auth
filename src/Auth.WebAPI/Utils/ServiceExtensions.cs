@@ -1,4 +1,5 @@
 ﻿using Auth.WebAPI.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -14,9 +15,7 @@ namespace Auth.WebAPI.Utils
             var secret = configs["secret"] ?? throw new Exception("Secret config was not found");
             var issuer = configs["issuer"] ?? throw new Exception("Issuer config was not found");
 
-            var signingKey = new SigningCredentials(
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-                            SecurityAlgorithms.HmacSha256Signature);
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
 
             var options = new JwtOptions
             {
@@ -24,7 +23,26 @@ namespace Auth.WebAPI.Utils
                 Issuer = issuer,
                 SigningKey = signingKey
             };
-            
+
+            services.AddSingleton(options);
+
+            AuthenticationBuilder b;
+
+            services.AddAuthentication("JWT")
+                    .AddJwtBearer("JWT", o =>
+                    {
+                        o.ClaimsIssuer = issuer;
+                        o.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            IssuerSigningKey = signingKey,
+                            ValidateIssuer = true,
+                            ValidateAudience = false,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true
+                        };
+                    });
+                    
+
         }
 
         public static IServiceCollection AddAllServices(this IServiceCollection services,

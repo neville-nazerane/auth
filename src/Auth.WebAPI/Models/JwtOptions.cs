@@ -9,7 +9,7 @@ namespace Auth.WebAPI.Models
 
         public required TimeSpan ExpiresIn { get; set; }
 
-        public required SigningCredentials SigningKey { get; set; }
+        public required SymmetricSecurityKey SigningKey { get; set; }
 
     }
 }
