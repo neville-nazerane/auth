@@ -39,8 +39,8 @@ namespace Auth.WebAPI.Services
         }
 
         public static async Task<UserModel> LoginAsync(SignInManager<User> manager,
-                                            AppDbContext context,
-                                            LoginModel model)
+                                                        AppDbContext context,
+                                                        LoginModel model)
         {
             var user = await context.Users.SingleOrDefaultAsync(u => u.UserName == model.UserName);
             

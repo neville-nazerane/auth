@@ -1,6 +1,8 @@
-﻿using Auth.WebAPI.Models;
+﻿using Auth.WebAPI.Entities;
+using Auth.WebAPI.Models;
 using Auth.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Abstractions;
 using Microsoft.IdentityModel.Tokens;
@@ -48,7 +50,12 @@ namespace Auth.WebAPI.Utils
         public static IServiceCollection AddDb(this IServiceCollection services, string? connectionString)
         {
             ArgumentNullException.ThrowIfNull(connectionString);
+            
             services.AddDbContext<AppDbContext>(c => c.UseSqlServer(connectionString));
+
+            services.AddIdentity<User, IdentityRole<string>>()
+                    .AddEntityFrameworkStores<AppDbContext>();
+
             return services;
         }
 
