@@ -26,8 +26,6 @@ namespace Auth.WebAPI.Utils
 
             services.AddSingleton(options);
 
-            AuthenticationBuilder b;
-
             services.AddAuthentication("JWT")
                     .AddJwtBearer("JWT", o =>
                     {

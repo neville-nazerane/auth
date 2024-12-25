@@ -18,7 +18,7 @@ namespace Auth.WebAPI.Services
                 Issuer = _options.Issuer,
                 Expires = DateTime.UtcNow.Add(_options.ExpiresIn),
                 Subject = new ClaimsIdentity(claims),
-                SigningCredentials = _options.SigningKey
+                SigningCredentials = new(_options.SigningKey, SecurityAlgorithms.HmacSha256)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
