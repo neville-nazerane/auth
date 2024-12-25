@@ -1,5 +1,7 @@
 ﻿using Auth.WebAPI.Models;
+using Auth.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -9,8 +11,8 @@ namespace Auth.WebAPI.Utils
     public static class ServiceExtensions
     {
 
-        public static void SetupJwt(this IServiceCollection services,
-                                    IConfiguration configs)
+        public static IServiceCollection SetupJwt(this IServiceCollection services,
+                                                  IConfiguration configs)
         {
             var secret = configs["secret"] ?? throw new Exception("Secret config was not found");
             var issuer = configs["issuer"] ?? throw new Exception("Issuer config was not found");
@@ -40,7 +42,14 @@ namespace Auth.WebAPI.Utils
                         };
                     });
                     
+            return services;
+        }
 
+        public static IServiceCollection AddDb(this IServiceCollection services, string? connectionString)
+        {
+            ArgumentNullException.ThrowIfNull(connectionString);
+            services.AddDbContext<AppDbContext>(c => c.UseSqlServer(connectionString));
+            return services;
         }
 
         public static IServiceCollection AddAllServices(this IServiceCollection services,

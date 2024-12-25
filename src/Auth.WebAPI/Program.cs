@@ -1,14 +1,14 @@
 using Auth.WebAPI.Services;
+using Auth.WebAPI.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(o =>
-{
-    
-}).AddBearerToken(o =>
-{
-    
-});
+var configs = builder.Configuration;
+var services = builder.Services;
+
+services.SetupJwt(configs.GetSection("auth"));
+
+services.AddDb(configs["sqlConnString"]);
 
 var app = builder.Build();
 
