@@ -9,9 +9,10 @@ var configs = builder.Configuration;
 var services = builder.Services;
 
 services.SetupJwt(configs.GetSection("auth"))
-        .AddDbWithIdentity(configs["sqlConnString"])
-        
-        .AddOpenApi("v1");
+        .AddDbWithIdentity(configs["sqlConnString"]);
+
+if (builder.Environment.IsDevelopment())
+    services.AddOpenApi("v1");
 
 var app = builder.Build();
 
@@ -21,7 +22,8 @@ app.MapGet("/", () => "Hello Auth!");
 
 app.MapAllEndpoints();
 
-app.MapOpenApi("/docs");
+if (builder.Environment.IsDevelopment())
+    app.MapOpenApi("/docs");
 
 await app.RunAsync();
 
