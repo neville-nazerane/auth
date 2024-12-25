@@ -47,13 +47,13 @@ namespace Auth.WebAPI.Utils
             return services;
         }
 
-        public static IServiceCollection AddDb(this IServiceCollection services, string? connectionString)
+        public static IServiceCollection AddDbWithIdentity(this IServiceCollection services, string? connectionString)
         {
             ArgumentNullException.ThrowIfNull(connectionString);
             
             services.AddDbContext<AppDbContext>(c => c.UseSqlServer(connectionString));
 
-            services.AddIdentity<User, IdentityRole<string>>()
+            services.AddIdentityApiEndpoints<User>()
                     .AddEntityFrameworkStores<AppDbContext>();
 
             return services;
