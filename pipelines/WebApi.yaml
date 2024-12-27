@@ -65,7 +65,7 @@ stages:
 
                 - script: |
 
-                    cat <<EOF  > $(Pipeline.Workspace)/published/linux.service
+                    sudo tee $(Pipeline.Workspace)/published/linux.service > /dev/null <<EOF
                     [Unit]
                     Description=$(service.description)
 
