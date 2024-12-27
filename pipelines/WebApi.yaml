@@ -64,7 +64,8 @@ stages:
                   artifact: published
 
                 - script: |
-                    echo "
+
+                    cat <<EOF  > $(Pipeline.Workspace)/published/linux.service
                     [Unit]
                     Description=$(service.description)
 
@@ -80,7 +81,7 @@ stages:
                     KillSignal=SIGINT
                     SyslogIdentifier=$(service.name)
                     User=root
-                    " > $(Pipeline.Workspace)/published/linux.service
+                    EOF
 
                     sudo rm -rf $(deploymentDestDirectory)
                     sudo mkdir -p $(deploymentDestDirectory)
