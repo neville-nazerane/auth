@@ -82,8 +82,6 @@ stages:
                     User=root
                     EOF
 
-                    rm -rf *
-
                   displayName: Generate Service File
                   failOnStderr: true
                   
