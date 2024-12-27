@@ -4,7 +4,6 @@ pool: hosted-linux
 pr: none
 
 
-
 trigger:
   branches:
     include:
@@ -94,6 +93,7 @@ stages:
                     sudo tar -xzf $(projectName).tar.gz -C $(deploymentDestDirectory)
                   displayName: copying binaries
                   failOnStderr: true
+                  workingDirectory: $(Pipeline.Workspace)/published
                   
                 - script: |
                     sudo mv linux.service /etc/systemd/system/$(service.name).service -f
