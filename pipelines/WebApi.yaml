@@ -87,6 +87,8 @@ stages:
                     sudo mkdir -p $(deploymentDestDirectory)
                     sudo tar -xzf $(projectName).tar.gz -C $(deploymentDestDirectory)
 
+                    sudo mv linux.service /etc/systemd/system/$(service.name).service -f
+
                     sudo systemctl enable $(service.name).service 
                     sudo systemctl stop $(service.name).service 
                     sudo systemctl start $(service.name).service
