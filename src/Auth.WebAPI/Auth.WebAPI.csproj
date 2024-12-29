@@ -22,6 +22,7 @@
 
 	<ItemGroup>
     <ProjectReference Include="..\Auth.Models\Auth.Models.csproj" />
+    <ProjectReference Include="..\Auth.ServerLogic\Auth.ServerLogic.csproj" />
   </ItemGroup>
 
 </Project>
