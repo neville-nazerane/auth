@@ -1,4 +1,6 @@
-﻿using Auth.WebAPI.Entities;
+﻿using Auth.ServerLogic.Entities;
+using Auth.ServerLogic.Services;
+using Auth.WebAPI.Entities;
 using Auth.WebAPI.Models;
 using Auth.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -44,25 +46,6 @@ namespace Auth.WebAPI.Utils
                         };
                     });
                     
-            return services;
-        }
-
-        public static IServiceCollection AddDbWithIdentity(this IServiceCollection services, string? connectionString)
-        {
-            ArgumentNullException.ThrowIfNull(connectionString);
-            
-            services.AddDbContext<AppDbContext>(c => c.UseSqlServer(connectionString));
-
-            services.AddIdentityApiEndpoints<User>()
-                    .AddEntityFrameworkStores<AppDbContext>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddAllServices(this IServiceCollection services,
-                                                        IConfiguration configs)
-        {
-
             return services;
         }
 
