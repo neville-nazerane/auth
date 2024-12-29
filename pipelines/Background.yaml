@@ -12,17 +12,16 @@ trigger:
     include:
       - src/Auth.Models
       - src/Auth.ServerLogic
-      - src/Auth.WebAPI
-      - pipelines/WebApi.yaml
+      - src/Auth.Background
+      - pipelines/Background.yaml
 
 variables:
-  projectPath: src/Auth.WebAPI
-  projectName: Auth.WebAPI
-  deploymentDestDirectory: /var/www/auth
+  projectPath: src/Auth.Background
+  projectName: Auth.Background
+  deploymentDestDirectory: /var/www/authBackground
 
-  service.name: kestrel-authAPI
-  service.url: http://localhost:5060
-  service.description: Auth API
+  service.name: kestrel-authBackground
+  service.description: Auth Background
 
 stages:
   - stage: 
@@ -36,7 +35,7 @@ stages:
           dotnet publish $(projectPath) -c release -o published
           mkdir -p compressed
           tar -czf compressed/$(projectName).tar.gz -C published .
-        displayName: Publishing API
+        displayName: Publishing .NET
 
       - publish: compressed
         displayName: Publish for release
@@ -76,7 +75,7 @@ stages:
 
                     [Service]
                     WorkingDirectory=$(deploymentDestDirectory)
-                    ExecStart=/usr/bin/dotnet $(deploymentDestDirectory)/$(projectName).dll --urls $(service.url)
+                    ExecStart=/usr/bin/dotnet $(deploymentDestDirectory)/$(projectName).dll
                     Restart=always
                     # Restart service after 10 seconds if the dotnet service crashes:
                     RestartSec=10

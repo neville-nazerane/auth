@@ -25,7 +25,7 @@ namespace Auth.Background.Workers
                 if (db is not null)
                 {
                     await db.Users
-                        //.Where(u => !u.IsPermanent && u.CreatedOn > DateTime.UtcNow.AddDays(1))
+                        .Where(u => !u.IsPermanent && u.CreatedOn > DateTime.UtcNow.AddDays(1))
                                   .ExecuteDeleteAsync(cancellationToken: stoppingToken);
                 }
 
