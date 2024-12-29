@@ -93,7 +93,7 @@ stages:
                 - script: |
                     sudo rm -rf $(deploymentDestDirectory)
                     sudo mkdir -p $(deploymentDestDirectory)
-                    sudo tar -xzf $(projectName).tar.gz -C $(deploymentDestDirectory)
+                    sudo tar -xvzf $(projectName).tar.gz -C $(deploymentDestDirectory) | tee /dev/tty | wc -l
                   displayName: copying binaries
                   failOnStderr: true
                   workingDirectory: $(Pipeline.Workspace)/published
