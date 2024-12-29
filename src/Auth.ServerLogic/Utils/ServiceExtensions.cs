@@ -17,7 +17,8 @@ namespace Auth.ServerLogic.Utils
             string? connectionString = configs["sqlConnString"];
             ArgumentNullException.ThrowIfNull(connectionString);
 
-            services.AddDbContext<AppDbContext>(c => c.UseSqlServer(connectionString));
+            services.AddDbContext<AppDbContext>(
+                c => c.UseSqlServer(connectionString, b => b.MigrationsAssembly("Auth.WebAPI")));
 
             return services;
         }

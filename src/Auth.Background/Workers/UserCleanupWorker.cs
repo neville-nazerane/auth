@@ -1,5 +1,6 @@
 ﻿using Auth.ServerLogic.Services;
 using Auth.WebAPI.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,12 @@ namespace Auth.Background.Workers
                 await using var scope = _serviceProvider.CreateAsyncScope();
                 var db = scope.ServiceProvider.GetService<AppDbContext>();
 
-                db.Users.Where(u => !u.IsPermanent && );
+                if (db is not null)
+                {
+                    await db.Users
+                        //.Where(u => !u.IsPermanent && u.CreatedOn > DateTime.UtcNow.AddDays(1))
+                                  .ExecuteDeleteAsync(cancellationToken: stoppingToken);
+                }
 
                 await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
             }

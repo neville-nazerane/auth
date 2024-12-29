@@ -1,6 +1,5 @@
 ﻿using Auth.ServerLogic.Entities;
 using Auth.ServerLogic.Services;
-using Auth.WebAPI.Entities;
 using Auth.WebAPI.Models;
 using Auth.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication;
