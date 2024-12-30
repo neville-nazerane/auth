@@ -36,6 +36,7 @@ stages:
           mkdir -p compressed
           tar -czf compressed/$(projectName).tar.gz -C published .
         displayName: Publishing .NET
+        failOnStderr: true
 
       - publish: compressed
         displayName: Publish for release
@@ -93,7 +94,7 @@ stages:
                 - script: |
                     sudo rm -rf $(deploymentDestDirectory)
                     sudo mkdir -p $(deploymentDestDirectory)
-                    sudo tar -xzf $(projectName).tar.gz -C $(deploymentDestDirectory)
+                    sudo tar -xvzf $(projectName).tar.gz -C $(deploymentDestDirectory)
                   displayName: copying binaries
                   failOnStderr: true
                   workingDirectory: $(Pipeline.Workspace)/published
