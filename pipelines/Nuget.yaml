@@ -15,10 +15,9 @@ trigger:
 
 
 variables:
-  projects:
-    - Auth.Models
-    - Auth.ApiConsumer
-
+  projects: |
+    Auth.Models
+    Auth.ApiConsumer
 
 stages:
 
@@ -30,11 +29,19 @@ stages:
       - job: Compile
         steps:
 
-        - ${{ each project in variables.projects }}:
-          - script: dotnet pack ${{ project }} -c release -o nugets
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: pack
+            configuration: release
             workingDirectory: src
-            displayName: Packing ${{ project }}
+            modifyOutputPath: true
+            arguments: -o nugets
+            projects: $(projects)
 
+        # - ${{ each project in variables['projects'].trim().split('\n') }}:
+        #   - script: dotnet pack ${{ project }} -c release -o nugets
+        #     workingDirectory: src
+        #     displayName: Packing ${{ project }}
 
         - publish: nugets
           artifact: packed
