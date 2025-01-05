@@ -16,10 +16,8 @@ trigger:
 
 variables:
   projects:
-      - Auth.Models
-      - Auth.ApiConsumer
-
-
+    - Auth.Models
+    - Auth.ApiConsumer
 
 
 stages:
@@ -31,7 +29,7 @@ stages:
 
       - job: Compile
         steps:
-          
+
         - ${{ each project in variables.projects }}:
           - script: dotnet pack ${{ project }} -c release -o nugets
             workingDirectory: src
