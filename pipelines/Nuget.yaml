@@ -35,6 +35,7 @@ stages:
             configuration: release
             workingDirectory: src
             modifyOutputPath: false
+            packDirectory: nugets
             arguments: -o nugets
             projects: $(projects)
 
