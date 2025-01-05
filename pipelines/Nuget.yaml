@@ -36,6 +36,7 @@ stages:
             workingDirectory: src
             modifyOutputPath: false
             packDirectory: nugets
+            packagesToPack: $(projects)
             arguments: -o nugets
             projects: $(projects)
 
