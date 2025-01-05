@@ -1,0 +1,45 @@
+
+pool: hosted-linux
+
+pr: none
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - src/Auth.Models
+      - src/Auth.ApiConsumer
+      - pipelines/Nuget.yaml
+
+
+variables:
+  projects:
+      - Auth.Models
+      - Auth.ApiConsumer
+
+
+
+
+stages:
+
+  - stage: 
+    displayName: Build
+
+    jobs:
+
+      - job: Compile
+        steps:
+          
+        - ${{ each project in variables.projects }}:
+          - script: dotnet pack ${{ project }} -c release -o nugets
+            workingDirectory: src
+            displayName: Packing ${{ project }}
+
+
+        - publish: nugets
+          artifact: packed
+
+
+

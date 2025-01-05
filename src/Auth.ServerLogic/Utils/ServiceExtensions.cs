@@ -11,7 +11,7 @@ namespace Auth.ServerLogic.Utils
     {
 
         public static IServiceCollection AddAllServices(this IServiceCollection services,
-                                                 IConfiguration configs)
+                                                        IConfiguration configs)
         {
 
             string? connectionString = configs["sqlConnString"];
