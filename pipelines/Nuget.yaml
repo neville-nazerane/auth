@@ -43,7 +43,7 @@ stages:
         #     projects: $(projects)
 
         - ${{ each project in parameters.projects }}:
-          - script: dotnet pack ${{ project }} -c release -o nugets
+          - script: dotnet pack ${{ project }} -c release -o $(System.DefaultWorkingDirectory)/nugets
             workingDirectory: src
             displayName: Packing ${{ project }}
 
