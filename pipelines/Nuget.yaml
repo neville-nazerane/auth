@@ -29,19 +29,19 @@ stages:
       - job: Compile
         steps:
 
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: pack
-            configuration: release
-            workingDirectory: src
-            modifyOutputPath: true
-            arguments: -o nugets
-            projects: $(projects)
-
-        # - ${{ each project in variables['projects'].trim().split('\n') }}:
-        #   - script: dotnet pack ${{ project }} -c release -o nugets
+        # - task: DotNetCoreCLI@2
+        #   inputs:
+        #     command: pack
+        #     configuration: release
         #     workingDirectory: src
-        #     displayName: Packing ${{ project }}
+        #     modifyOutputPath: true
+        #     arguments: -o nugets
+        #     projects: $(projects)
+
+        - ${{ each project in variables['projects'].trim().split('\n') }}:
+          - script: dotnet pack ${{ project }} -c release -o nugets
+            workingDirectory: src
+            displayName: Packing ${{ project }}
 
         - publish: nugets
           artifact: packed
