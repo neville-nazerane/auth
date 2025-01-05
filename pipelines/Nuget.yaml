@@ -16,6 +16,7 @@ trigger:
 
 parameters:
   - name: projects
+    type: object
     default:
     - Auth.Models
     - Auth.ApiConsumer
