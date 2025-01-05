@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+		<Nullable>enable</Nullable>
+		<PackageId>Neville.Auth.ApiConsumer</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
