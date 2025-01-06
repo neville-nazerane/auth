@@ -55,6 +55,7 @@ stages:
               dotnet pack ${{ project }} \
               -c release \
               -o $(System.DefaultWorkingDirectory)/nugets
+              -p:Version=$(Build.BuildName)
             workingDirectory: src
             displayName: Packing ${{ project }}
         
@@ -86,6 +87,5 @@ stages:
         - script: |
             dotnet nuget push "$(Pipeline.Workspace)/**/*.nupkg" \
                 --source "https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json" \
-                -p:PackageVersion=$(Build.BuildName) \
                 --api-key "DummyKey"
           displayName: Push NuGet packages
