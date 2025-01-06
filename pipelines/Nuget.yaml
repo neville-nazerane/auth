@@ -55,7 +55,7 @@ stages:
               dotnet pack ${{ project }} \
               -c release \
               -o $(System.DefaultWorkingDirectory)/nugets \
-              /p:PackageVersion=$(Build.BuildName)
+              /p:PackageVersion=$(Build.BuildNumber)
             workingDirectory: src
             displayName: Packing ${{ project }}
         
