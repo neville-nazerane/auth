@@ -60,6 +60,10 @@ stages:
 
         steps:
 
+        - download: current
+
+        - checkout: none
+
         - task: NuGetAuthenticate@1
 
         - task: NuGetCommand@2
