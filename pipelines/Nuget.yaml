@@ -14,6 +14,12 @@ trigger:
       - pipelines/Nuget.yaml
 
 
+variables:
+  MajorVersion: 1
+  MinorVersion: 0
+
+name: $(MajorVersion).$(MinorVersion).$(Build.BuildId)
+
 parameters:
   - name: projects
     type: object
@@ -78,5 +84,6 @@ stages:
         - script: |
             dotnet nuget push "$(Pipeline.Workspace)/**/*.nupkg" \
                 --source "https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json" \
+                --version "$(Build.BuildName)" \
                 --api-key "DummyKey"
           displayName: Push NuGet packages
