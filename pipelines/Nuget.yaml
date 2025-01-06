@@ -65,6 +65,8 @@ stages:
         - checkout: none
 
         - task: NuGetAuthenticate@1
+          inputs:
+            nuGetServiceConnections: Development Nugets
 
         # - task: NuGetCommand@2
         #   inputs:
@@ -77,4 +79,4 @@ stages:
             dotnet nuget push "$(Pipeline.Workspace)/**/*.nupkg" \
                 --source "https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json" \
                 --api-key "DummyKey"
-          displayName: 'Push NuGet packages'
+          displayName: Push NuGet packages
