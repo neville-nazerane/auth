@@ -7,6 +7,8 @@ trigger:
   branches:
     include:
       - master
+      - theNuget
+
   paths:
     include:
       - src/Auth.Models
@@ -84,6 +86,6 @@ stages:
         - script: |
             dotnet nuget push "$(Pipeline.Workspace)/**/*.nupkg" \
                 --source "https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json" \
-                -p:Version=$(Build.BuildName) \
+                -p:PackageVersion=$(Build.BuildName) \
                 --api-key "DummyKey"
           displayName: Push NuGet packages
