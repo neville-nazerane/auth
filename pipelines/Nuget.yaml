@@ -66,6 +66,8 @@ stages:
   - stage: Deploy
     jobs:
       - job: Push
+        workspace:
+          clean: all
 
         steps:
 
@@ -90,3 +92,5 @@ stages:
                 --source "https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json" \
                 --api-key "DummyKey"
           displayName: Push NuGet packages
+
+       
