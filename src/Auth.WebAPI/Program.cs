@@ -21,9 +21,27 @@ services.AddIdentity<User, IdentityRole<string>>()
 if (builder.Environment.IsDevelopment())
     services.AddOpenApi("v1");
 
+builder.Services.AddCors(options =>
+{
+    var cors = configs["cors"];
+    if (cors is not null)
+    {
+        var urls = cors.Split(',');
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.WithOrigins(urls)
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+    }
+
+});
+
 var app = builder.Build();
 
 app.HandleExceptions();
+
+app.UseCors();
 
 app.MapGet("/", () => "Hello Auth!");
 

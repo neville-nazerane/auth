@@ -29,7 +29,8 @@ namespace Auth.WebAPI.Utils
                 SigningKey = signingKey
             };
 
-            services.AddSingleton(options);
+            services.AddSingleton(options)
+                    .AddSingleton<TokenGenerator>();
 
             services.AddAuthentication("JWT")
                     .AddJwtBearer("JWT", o =>

@@ -1,0 +1,96 @@
+
+pool: hosted-linux
+
+pr: none
+
+trigger:
+  branches:
+    include:
+      - master
+      - theNuget
+
+  paths:
+    include:
+      - src/Auth.Models
+      - src/Auth.ApiConsumer
+      - pipelines/Nuget.yaml
+
+
+variables:
+  MajorVersion: 1
+  MinorVersion: 0
+
+name: $(MajorVersion).$(MinorVersion).$(Build.BuildId)
+
+parameters:
+  - name: projects
+    type: object
+    default:
+    - Auth.Models
+    - Auth.ApiConsumer
+
+stages:
+
+  - stage: 
+    displayName: Build
+
+    jobs:
+
+      - job: Compile
+        steps:
+
+        # - task: DotNetCoreCLI@2
+        #   inputs:
+        #     command: pack
+        #     configuration: release
+        #     workingDirectory: src
+        #     modifyOutputPath: false
+        #     packDirectory: nugets
+        #     packagesToPack: $(projects)
+        #     arguments: -o nugets
+        #     projects: $(projects)
+
+        - ${{ each project in parameters.projects }}:
+          - script: |
+              dotnet pack ${{ project }} \
+              -c release \
+              -o $(System.DefaultWorkingDirectory)/nugets \
+              /p:PackageVersion=$(Build.BuildNumber)
+            workingDirectory: src
+            displayName: Packing ${{ project }}
+        
+
+        - publish: nugets
+          artifact: packed
+
+  - stage: Deploy
+    jobs:
+      - job: Push
+        workspace:
+          clean: all
+
+        steps:
+
+        - download: current
+          artifact: packed
+
+        - checkout: none
+
+        - task: NuGetAuthenticate@1
+          inputs:
+            nuGetServiceConnections: Development Nugets
+
+        # - task: NuGetCommand@2
+        #   inputs:
+        #     command: push
+        #     packagesToPush: $(Pipeline.Workspace)/**/*.nupkg
+        #     nuGetFeedType: internal
+        #     publishVstsFeed: https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json
+
+        - script: |
+            dotnet nuget push "$(Pipeline.Workspace)/**/*.nupkg" \
+                --source "https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json" \
+                --api-key "DummyKey"
+          displayName: Push NuGet packages
+
+       
