@@ -86,6 +86,7 @@ stages:
                     Environment=sqlConnString='$(sqlConnString)'
                     Environment=auth__secret='$(auth.secret)'
                     Environment=auth__issuer='$(auth.issuer)'
+                    Environment=cors='$(cors)'
                     EOF
 
                   displayName: Generate Service File
