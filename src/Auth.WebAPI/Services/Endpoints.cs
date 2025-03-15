@@ -56,7 +56,7 @@ namespace Auth.WebAPI.Services
 
                     var token = tokenGenerator.GenerateToken([
                         new(ClaimTypes.Name, user.UserName),
-                        new(ClaimTypes.NameIdentifier, user.Id),
+                        new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     ]);
 
                     return token;

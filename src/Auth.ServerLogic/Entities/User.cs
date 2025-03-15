@@ -2,7 +2,7 @@
 
 namespace Auth.ServerLogic.Entities
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<int>
     {
 
         public bool IsPermanent { get; set; }

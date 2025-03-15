@@ -20,14 +20,11 @@ namespace Auth.Background.Workers
             {
 
                 await using var scope = _serviceProvider.CreateAsyncScope();
-                var db = scope.ServiceProvider.GetService<AppDbContext>();
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                if (db is not null)
-                {
-                    await db.Users
-                        .Where(u => !u.IsPermanent && u.CreatedOn > DateTime.UtcNow.AddDays(1))
-                                  .ExecuteDeleteAsync(cancellationToken: stoppingToken);
-                }
+                await db.Users
+                        .Where(u => !u.IsPermanent && u.CreatedOn < DateTime.UtcNow.AddDays(-1))
+                              .ExecuteDeleteAsync(cancellationToken: stoppingToken);
 
                 await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
             }

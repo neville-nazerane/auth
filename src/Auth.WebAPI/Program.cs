@@ -15,7 +15,7 @@ var services = builder.Services;
 services.SetupJwt(configs.GetSection("auth"))
                     .AddAllServices(configs);
 
-services.AddIdentity<User, IdentityRole<string>>()
+services.AddIdentity<User, IdentityRole<int>>()
                     .AddEntityFrameworkStores<AppDbContext>();
 
 if (builder.Environment.IsDevelopment())
