@@ -4,21 +4,24 @@ using Auth.ServerLogic.Services;
 using Auth.WebAPI.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace Auth.WebAPI.Services
 {
     public static class Endpoints
     {
 
+
         public static void MapAllEndpoints(this IEndpointRouteBuilder endpoints)
         {
-
             endpoints.MapPost("signup", SignupAsync);
 
             endpoints.MapPost("login", LoginAsync);
+            endpoints.MapGet("refreshToken/{refreshToken}", RefreshTokenAsync);
         }
 
 
@@ -41,29 +44,15 @@ namespace Auth.WebAPI.Services
             }
         }
 
-        public static async Task<string> LoginAsync(SignInManager<User> manager,
-                                                        AppDbContext context,
-                                                        TokenGenerator tokenGenerator,
-                                                        LoginModel model)
-        {
-            var user = await context.Users.SingleOrDefaultAsync(u => u.UserName == model.UserName);
-            
-            if (user?.UserName is not null)
-            {
-                var valid = await manager.CheckPasswordSignInAsync(user, model.Password ?? "", false);
-                if (valid.Succeeded)
-                {
+        static Task<TokenResponse> LoginAsync(LoginService service,
+                                             LoginModel model,
+                                             CancellationToken cancellationToken = default)
+            => service.GetJwtForLoginAsync(model, cancellationToken);
 
-                    var token = tokenGenerator.GenerateToken([
-                        new(ClaimTypes.Name, user.UserName),
-                        new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    ]);
-
-                    return token;
-                }
-            }
-            throw new BadRequestException(["Invalid Login"]);
-        }
+        static Task<TokenResponse> RefreshTokenAsync(LoginService service,
+                                                            string refreshToken,
+                                                            CancellationToken cancellationToken = default)
+            => service.GetJwtForRefreshAsync(refreshToken, cancellationToken);
 
     }
 }

@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Background", "Auth.Bac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.ServerLogic", "Auth.ServerLogic\Auth.ServerLogic.csproj", "{50F45B53-721C-47A6-AB48-5E26AC67C984}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{EE84509A-48BD-418F-904E-482A70A9A5E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7138185C-DDC6-413B-A843-DDB2BB8FBC73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +48,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37AF0B78-EFC1-4107-A496-2C2B788890BE} = {EE84509A-48BD-418F-904E-482A70A9A5E5}
+		{13A06874-CEE9-4D29-BF14-4E41FF3BB509} = {7138185C-DDC6-413B-A843-DDB2BB8FBC73}
+		{5BFA4434-29A1-4964-BBF6-EEBCC255C069} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{DA7BAE2C-F94B-425E-9B54-3316A49520B2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{50F45B53-721C-47A6-AB48-5E26AC67C984} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FAC9D965-C738-45B6-BD7C-61571C6CCCD6}
 	EndGlobalSection
 EndGlobal
