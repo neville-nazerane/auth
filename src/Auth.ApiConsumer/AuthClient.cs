@@ -19,12 +19,15 @@ namespace Auth.ApiConsumer
             res.EnsureSuccessStatusCode();
         }
 
-        public async Task<string> LoginAsync(LoginModel model, CancellationToken cancellationToken = default)
+        public async Task<TokenResponse?> LoginAsync(LoginModel model, CancellationToken cancellationToken = default)
         {
             using var res = await _httpClient.PostAsJsonAsync("login", model, cancellationToken: cancellationToken);
             res.EnsureSuccessStatusCode();
-            return await res.Content.ReadAsStringAsync(cancellationToken);
+            return await res.Content.ReadFromJsonAsync<TokenResponse>(cancellationToken);
         }
+
+        public Task<TokenResponse?> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+            => _httpClient.GetFromJsonAsync<TokenResponse>($"refreshToken/{refreshToken}", cancellationToken: cancellationToken);
 
     }
 }

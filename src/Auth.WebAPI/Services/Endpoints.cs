@@ -4,6 +4,7 @@ using Auth.ServerLogic.Services;
 using Auth.WebAPI.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,10 +18,10 @@ namespace Auth.WebAPI.Services
 
         public static void MapAllEndpoints(this IEndpointRouteBuilder endpoints)
         {
-
             endpoints.MapPost("signup", SignupAsync);
 
             endpoints.MapPost("login", LoginAsync);
+            endpoints.MapGet("refreshToken/{refreshToken}", RefreshTokenAsync);
         }
 
 
@@ -43,14 +44,15 @@ namespace Auth.WebAPI.Services
             }
         }
 
-        static async Task<string> LoginAsync(SignInManager<User> manager,
-                                                        AppDbContext context,
-                                                        TokenGenerator tokenGenerator,
-                                                        LoginModel model)
-        {
+        static Task<TokenResponse> LoginAsync(LoginService service,
+                                             LoginModel model,
+                                             CancellationToken cancellationToken = default)
+            => service.GetJwtForLoginAsync(model, cancellationToken);
 
-            return await GenerateJwtAsync(manager, tokenGenerator, model, user);
-        }
+        static Task<TokenResponse> RefreshTokenAsync(LoginService service,
+                                                            string refreshToken,
+                                                            CancellationToken cancellationToken = default)
+            => service.GetJwtForRefreshAsync(refreshToken, cancellationToken);
 
     }
 }
