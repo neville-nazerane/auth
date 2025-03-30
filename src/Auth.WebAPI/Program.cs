@@ -18,6 +18,8 @@ services.SetupJwt(configs.GetSection("auth"))
 services.AddIdentity<User, IdentityRole<int>>()
                     .AddEntityFrameworkStores<AppDbContext>();
 
+services.AddTransient<LoginService>();
+
 if (builder.Environment.IsDevelopment())
     services.AddOpenApi("v1");
 

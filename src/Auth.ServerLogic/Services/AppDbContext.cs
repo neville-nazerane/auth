@@ -8,7 +8,7 @@ namespace Auth.ServerLogic.Services
     public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<User, IdentityRole<int>, int>(options)
     {
 
-
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     }
 }

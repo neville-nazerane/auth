@@ -4,5 +4,10 @@
     {
         public IEnumerable<string> Messages { get; } = messages;
 
+        public BadRequestException(string message) : this([message])
+        {
+            
+        }
+
     }
 }

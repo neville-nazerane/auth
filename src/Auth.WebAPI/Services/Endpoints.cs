@@ -7,11 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace Auth.WebAPI.Services
 {
     public static class Endpoints
     {
+
 
         public static void MapAllEndpoints(this IEndpointRouteBuilder endpoints)
         {
@@ -41,28 +43,13 @@ namespace Auth.WebAPI.Services
             }
         }
 
-        public static async Task<string> LoginAsync(SignInManager<User> manager,
+        static async Task<string> LoginAsync(SignInManager<User> manager,
                                                         AppDbContext context,
                                                         TokenGenerator tokenGenerator,
                                                         LoginModel model)
         {
-            var user = await context.Users.SingleOrDefaultAsync(u => u.UserName == model.UserName);
-            
-            if (user?.UserName is not null)
-            {
-                var valid = await manager.CheckPasswordSignInAsync(user, model.Password ?? "", false);
-                if (valid.Succeeded)
-                {
 
-                    var token = tokenGenerator.GenerateToken([
-                        new(ClaimTypes.Name, user.UserName),
-                        new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    ]);
-
-                    return token;
-                }
-            }
-            throw new BadRequestException(["Invalid Login"]);
+            return await GenerateJwtAsync(manager, tokenGenerator, model, user);
         }
 
     }

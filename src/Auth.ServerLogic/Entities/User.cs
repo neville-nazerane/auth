@@ -9,6 +9,8 @@ namespace Auth.ServerLogic.Entities
 
         public DateTime CreatedOn { get; set; }
 
+        public IEnumerable<RefreshToken>? RefreshTokens { get; set; }
+
         public User()
         {
             CreatedOn = DateTime.UtcNow;

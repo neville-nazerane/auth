@@ -10,7 +10,7 @@ namespace Auth.WebAPI.Services
         
         private readonly JwtOptions _options = options;
 
-        public string GenerateToken(IEnumerable<Claim> claims)
+        public string GenerateToken(IEnumerable<Claim> claims, out double expiersIn)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -22,6 +22,7 @@ namespace Auth.WebAPI.Services
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            expiersIn = _options.ExpiresIn.TotalSeconds;
             return tokenHandler.WriteToken(token);
         }
 
