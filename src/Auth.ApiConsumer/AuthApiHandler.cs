@@ -8,13 +8,26 @@ using System.Threading.Tasks;
 
 namespace Auth.ApiConsumer
 {
-    public class AuthApiHandler : HttpClientHandler
+    public class AuthApiHandler(AuthService service) : HttpClientHandler
     {
+
+        private readonly AuthService _service = service;
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
                                                                      CancellationToken cancellationToken)
         {
+            var token = await _service.GetJwtAsync(cancellationToken: cancellationToken);
+
+            if (token is not null)
+                request.Headers.Authorization = new("Bearer", token);
+
             var res = await base.SendAsync(request, cancellationToken);
+
+            if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+
+            }
+
             if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 var errors = await res.Content.ReadFromJsonAsync<IEnumerable<string>>(cancellationToken: cancellationToken) ?? [];
