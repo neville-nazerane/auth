@@ -23,9 +23,17 @@ namespace Auth.ApiConsumer
 
             var res = await base.SendAsync(request, cancellationToken);
 
-            if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized && token is not null)
             {
+                await _service.RefreshAsync(cancellationToken: cancellationToken);
 
+                token = await _service.GetJwtAsync(cancellationToken: cancellationToken);
+
+                if (token is null) return res;
+
+                request.Headers.Authorization = new("Bearer", token);
+
+                res = await base.SendAsync(request, cancellationToken);
             }
 
             if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
