@@ -65,11 +65,15 @@ namespace Auth.ApiConsumer
         public async Task<bool> RefreshAsync(CancellationToken cancellationToken = default)
         {
             var tokenResult = await _store.GetAsync(cancellationToken);
+            if (tokenResult is null) return false;
             var res = await _client.RefreshTokenAsync(tokenResult.RefreshToken, cancellationToken);
             if (res is null) return false;
             await SaveTokenAsync(res, cancellationToken);
             return true;
         }
+
+        public Task SignOutAsync(CancellationToken cancellationToken = default)
+            => _store.RemoveAsync(cancellationToken);
 
         async Task<TokenData> SaveTokenAsync(TokenResponse response, CancellationToken cancellationToken = default)
         {

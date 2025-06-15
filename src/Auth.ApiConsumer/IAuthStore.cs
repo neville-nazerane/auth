@@ -14,6 +14,6 @@ namespace Auth.ApiConsumer
         public Task SetAsync(TokenData tokenResponse, CancellationToken cancellationToken = default);
 
         public Task<TokenData?> GetAsync(CancellationToken cancellationToken = default);
-
+        Task RemoveAsync(CancellationToken cancellationToken = default);
     }
 }
