@@ -13,6 +13,8 @@ namespace Auth.ApiConsumer
 
         private readonly AuthService _service = service;
 
+        protected AuthService AuthService => _service;
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
                                                                      CancellationToken cancellationToken)
         {
