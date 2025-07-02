@@ -9,6 +9,7 @@ using System.Collections.Immutable;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace Auth.WebAPI.Services
 {
@@ -22,8 +23,9 @@ namespace Auth.WebAPI.Services
 
             endpoints.MapPost("login", LoginAsync);
             endpoints.MapGet("refreshToken/{refreshToken}", RefreshTokenAsync);
-        }
 
+            endpoints.MapPost("fetchValidIds", GetValidIdsAsync).RequireAuthorization();
+        }
 
 
 
@@ -53,6 +55,29 @@ namespace Auth.WebAPI.Services
                                                             string refreshToken,
                                                             CancellationToken cancellationToken = default)
             => service.GetJwtForRefreshAsync(refreshToken, cancellationToken);
+
+        public static async IAsyncEnumerable<int> GetValidIdsAsync(IAsyncEnumerable<int> userIds, AppDbContext context)
+        {
+            List<int> ids = [];
+
+            await foreach (var userId in userIds)
+            {
+                ids.Add(userId);
+                if (ids.Count > 9)
+                {
+                    var dbIds = context.Users
+                                       .Where(u => ids.Contains(u.Id))
+                                       .Select(s => s.Id)
+                                       .AsAsyncEnumerable();
+
+                    await foreach (var id in dbIds)
+                        yield return id;
+
+                    ids.Clear();
+                }
+            }
+            
+        }
 
     }
 }
