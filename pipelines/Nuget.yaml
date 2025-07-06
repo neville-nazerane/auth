@@ -13,6 +13,7 @@ trigger:
     include:
       - src/Auth.Models
       - src/Auth.ApiConsumer
+      - src/Auth.ServerSDK
       - pipelines/Nuget.yaml
 
 
@@ -28,6 +29,7 @@ parameters:
     default:
     - Auth.Models
     - Auth.ApiConsumer
+    - Auth.ServerSDK
 
 stages:
 
@@ -38,17 +40,6 @@ stages:
 
       - job: Compile
         steps:
-
-        # - task: DotNetCoreCLI@2
-        #   inputs:
-        #     command: pack
-        #     configuration: release
-        #     workingDirectory: src
-        #     modifyOutputPath: false
-        #     packDirectory: nugets
-        #     packagesToPack: $(projects)
-        #     arguments: -o nugets
-        #     projects: $(projects)
 
         - ${{ each project in parameters.projects }}:
           - script: |
@@ -79,13 +70,6 @@ stages:
         - task: NuGetAuthenticate@1
           inputs:
             nuGetServiceConnections: Development Nugets
-
-        # - task: NuGetCommand@2
-        #   inputs:
-        #     command: push
-        #     packagesToPush: $(Pipeline.Workspace)/**/*.nupkg
-        #     nuGetFeedType: internal
-        #     publishVstsFeed: https://pkgs.dev.azure.com/nevillenazerane/Nugets/_packaging/Development_Projects/nuget/v3/index.json
 
         - script: |
             dotnet nuget push "$(Pipeline.Workspace)/**/*.nupkg" \

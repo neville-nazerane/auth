@@ -15,11 +15,12 @@ var services = builder.Services;
 services.SetupJwt(configs.GetSection("auth"))
                     .AddAllServices(configs);
 
-services.AddAuthentication(o =>
-{
-    o.AddScheme<HeaderAuthenticationHandler>(HeaderAuthenticationHandler.SCHEME_NAME, null);
-});
-services.AddAuthorization(o => o.AddPolicy(HeaderAuthenticationHandler.SCHEME_NAME, 
+services.AddAuthentication()
+        .AddScheme<HeaderAuthenticationptions, HeaderAuthenticationHandler>(HeaderAuthenticationHandler.SCHEME_NAME, o =>
+        {
+            o.Key = configs["headerKey"];
+        });
+services.AddAuthorization(o => o.AddPolicy(HeaderAuthenticationHandler.SCHEME_NAME,
                                 c => c.AddAuthenticationSchemes(HeaderAuthenticationHandler.SCHEME_NAME)));
 
 services.AddIdentity<User, IdentityRole<int>>()
