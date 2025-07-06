@@ -16,7 +16,7 @@ services.SetupJwt(configs.GetSection("auth"))
                     .AddAllServices(configs);
 
 services.AddAuthentication()
-        .AddScheme<HeaderAuthenticationptions, HeaderAuthenticationHandler>(HeaderAuthenticationHandler.SCHEME_NAME, o =>
+        .AddScheme<HeaderAuthenticatinOptions, HeaderAuthenticationHandler>(HeaderAuthenticationHandler.SCHEME_NAME, o =>
         {
             o.Key = configs["headerKey"];
         });

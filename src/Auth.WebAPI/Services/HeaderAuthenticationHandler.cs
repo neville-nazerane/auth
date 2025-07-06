@@ -4,10 +4,10 @@ using System.Text.Encodings.Web;
 
 namespace Auth.WebAPI.Services
 {
-    public class HeaderAuthenticationHandler(IOptionsMonitor<HeaderAuthenticationptions> options,
+    public class HeaderAuthenticationHandler(IOptionsMonitor<HeaderAuthenticatinOptions> options,
                                              ILoggerFactory logger,
                                              UrlEncoder encoder)
-        : AuthenticationHandler<HeaderAuthenticationptions>(options, logger, encoder)
+        : AuthenticationHandler<HeaderAuthenticatinOptions>(options, logger, encoder)
     {
 
         public const string SCHEME_NAME = "header_auth";
@@ -22,7 +22,7 @@ namespace Auth.WebAPI.Services
         }
     }
 
-    public class HeaderAuthenticationptions : AuthenticationSchemeOptions
+    public class HeaderAuthenticatinOptions : AuthenticationSchemeOptions
     {
 
         public string? Key { get; set; }
