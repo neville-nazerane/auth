@@ -10,6 +10,6 @@ namespace Auth.ServerSDK
     {
 
         public required string HeaderKey { get; set; }
-
+        public required string Endpoint { get; set; }
     }
 }
