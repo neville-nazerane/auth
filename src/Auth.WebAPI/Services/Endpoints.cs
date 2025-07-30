@@ -56,28 +56,11 @@ namespace Auth.WebAPI.Services
                                                             CancellationToken cancellationToken = default)
             => service.GetJwtForRefreshAsync(refreshToken, cancellationToken);
 
-        public static async IAsyncEnumerable<int> GetValidIdsAsync(IAsyncEnumerable<int> userIds, AppDbContext context)
-        {
-            List<int> ids = [];
-
-            await foreach (var userId in userIds)
-            {
-                ids.Add(userId);
-                if (ids.Count > 9)
-                {
-                    var dbIds = context.Users
-                                       .Where(u => ids.Contains(u.Id))
-                                       .Select(s => s.Id)
-                                       .AsAsyncEnumerable();
-
-                    await foreach (var id in dbIds)
-                        yield return id;
-
-                    ids.Clear();
-                }
-            }
-            
-        }
+        public static IAsyncEnumerable<int> GetValidIdsAsync(IEnumerable<int> userIds, AppDbContext context) 
+            => context.Users
+                        .Where(u => userIds.Contains(u.Id))
+                        .Select(u => u.Id)
+                        .AsAsyncEnumerable();
 
     }
 }
