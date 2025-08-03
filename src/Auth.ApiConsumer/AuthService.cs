@@ -45,13 +45,13 @@ namespace Auth.ApiConsumer
                 Password = model.Password,
             };
             if (includeLogin)
-                return await LoginAsync(loginModel, cancellationToken);
+                return await SigninAsync(loginModel, cancellationToken);
 
             // assumes signup throws on fail
             return true;
         }
 
-        public async Task<bool> LoginAsync(LoginModel model, CancellationToken cancellationToken = default)
+        public async Task<bool> SigninAsync(LoginModel model, CancellationToken cancellationToken = default)
         {
             var response = await _client.LoginAsync(model, cancellationToken);
             if (response is not null)

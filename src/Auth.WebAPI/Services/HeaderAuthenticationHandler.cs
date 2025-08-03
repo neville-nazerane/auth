@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 
 namespace Auth.WebAPI.Services
@@ -16,8 +17,11 @@ namespace Auth.WebAPI.Services
         {
             var headers = Context.Request.Headers[SCHEME_NAME];
             if (headers.Count == 1 && Options.Key is not null && Options.Key == headers.First())
-                return Task.FromResult(AuthenticateResult.Success(new(new(), SCHEME_NAME)));
-            
+            {
+                var identity = new ClaimsIdentity([new Claim(ClaimTypes.Name, "batman")]);
+                return Task.FromResult(AuthenticateResult.Success(new(new(identity), SCHEME_NAME)));
+            }
+
             return Task.FromResult(AuthenticateResult.Fail("No or invalid header"));
         }
     }

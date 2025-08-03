@@ -21,7 +21,8 @@ services.AddAuthentication()
             o.Key = configs["headerKey"];
         });
 services.AddAuthorization(o => o.AddPolicy(HeaderAuthenticationHandler.SCHEME_NAME,
-                                c => c.AddAuthenticationSchemes(HeaderAuthenticationHandler.SCHEME_NAME)));
+                                c => c.AddAuthenticationSchemes(HeaderAuthenticationHandler.SCHEME_NAME)
+                                      .RequireClaim("batman")));
 
 services.AddIdentity<User, IdentityRole<int>>()
                     .AddEntityFrameworkStores<AppDbContext>();
