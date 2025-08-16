@@ -87,6 +87,7 @@ stages:
                     Environment=auth__secret='$(auth.secret)'
                     Environment=auth__issuer='$(auth.issuer)'
                     Environment=cors='$(auth.cors)'
+                    Environment=headerKey='$(auth.key)'
                     EOF
 
                   displayName: Generate Service File
